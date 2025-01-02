@@ -1,41 +1,29 @@
 <!DOCTYPE html>
-<html>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 <head>
-    <title>LED Control</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
-        .button { padding: 10px 20px; margin: 5px; font-size: 18px; cursor: pointer; }
-        #colorPicker { margin: 10px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LED Color Control</title>
 </head>
 <body>
-    <h1>LED Control Panel</h1>
-    <label for="colorPicker">Choose a Color:</label>
-    <input type="color" id="colorPicker" value="#ff0000"><br><br>
-    <button class="button" onclick="sendColor()">Set LED Color</button>
-    
-    <script>
-        function sendColor() {
-            const color = document.getElementById("colorPicker").value; // Get the selected color
-            const url = "http://<ESP8266_IP>/setColor"; // Replace <ESP8266_IP> with your ESP8266's IP address
-            
-            // Send the color to the ESP8266
-            fetch(url, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ color: color }),
-            })
-            .then(response => response.text())
-            .then(responseText => {
-                console.log("Response from ESP8266:", responseText);
-                alert("Color sent successfully!");
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                alert("Failed to send color!");
-            });
-        }
-    </script>
+  <h1>Control LED Color</h1>
+  <input type="color" id="colorPicker" value="#ff0000">
+  <button onclick="sendColor()">Send Color</button>
+
+  <script>
+    function sendColor() {
+      const color = document.getElementById("colorPicker").value; // Get the selected color
+      fetch("http://192.168.4.132/setcolor", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ color: color }), // Send the color as JSON
+      })
+      .then(response => response.text())
+      .then(data => alert("Response: " + data))
+      .catch(error => console.error("Error:", error));
+    }
+  </script>
 </body>
 </html>
