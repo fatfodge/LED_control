@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LED Color Control</title>
+    <title>ESP-01 LED Control</title>
 </head>
 <body>
-  <h1>Control LED Color</h1>
-  <input type="color" id="colorPicker" value="#ff0000">
-  <button onclick="sendColor()">Send Color</button>
+    <h1>LED Control</h1>
+    <input type="color" id="colorPicker" value="#ff0000">
+    <button onclick="sendColor()">Send Color</button>
 
-  <script>
-    function sendColor() {
-      const color = document.getElementById("colorPicker").value; // Get the selected color
-      fetch("http://192.168.4.132/setcolor", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ color: color }), // Send the color as JSON
-      })
-      .then(response => response.text())
-      .then(data => alert("Response: " + data))
-      .catch(error => console.error("Error:", error));
-    }
-  </script>
+    <script>
+        function sendColor() {
+            const color = document.getElementById("colorPicker").value;
+            fetch("http://<ESP_IP_ADDRESS>/setcolor", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ color: color }),
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log("Response:", data);
+                alert("Color sent: " + color);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to send color!");
+            });
+        }
+    </script>
 </body>
 </html>
