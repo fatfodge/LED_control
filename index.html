@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ESP-01 LED Control</title>
+    <title>ESP-01 LED Control v2</title>
 </head>
 <body>
     <h1>LED Control</h1>
@@ -11,7 +11,7 @@
     <script>
         function sendColor() {
             const color = document.getElementById("colorPicker").value;
-            fetch("http://<ESP_IP_ADDRESS>/setcolor", {
+            fetch("http://192.168.4.132/setcolor", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
