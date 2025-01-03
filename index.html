@@ -22,7 +22,7 @@
       if (color.length === 6) {
         try {
           // Replace with your ESP-01's IP or domain name
-          const espUrl = "http://YOUR_ESP_IP_OR_DOMAIN/setColor";
+          const espUrl = "http://192.168.4.132/setColor";
           const response = await fetch(`${espUrl}?color=${color}`);
           if (response.ok) {
             document.getElementById('response').textContent = "Color sent successfully!";
