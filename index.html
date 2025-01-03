@@ -1,38 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ESP-01 LED Control v3</title>
+  <title>ESP Color Picker</title>
 </head>
 <body>
-    <h1>LED Control v2</h1>
-    <input type="color" id="colorPicker" value="#ff0000">
-    <button onclick="sendColor()">Send Color</button>
+  <h2>Set RGB LED Color</h2>
+  <form id="colorForm">
+    <label for="color">Enter HEX Color (e.g., FF5733):</label><br>
+    <input type="text" id="color" name="color" maxlength="6" placeholder="FFFFFF" required><br><br>
+    <button type="submit">Send Color</button>
+  </form>
 
-    <script>
-        function sendColor() {
-    let hexColor = document.getElementById('hexColor').value;
+  <p id="response"></p>
 
-    // Ensure the hex color starts with a #
-    if (!hexColor.startsWith('#')) {
-        hexColor = '#' + hexColor;
-    }
+  <script>
+    // JavaScript to handle form submission
+    document.getElementById('colorForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
 
-    // Send the color code to ESP-01 (using HTTPS)
-    fetch('https://192.168.4.132/setcolor', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ color: hexColor })
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log('Success:', data);
-    })
-    .catch((error) => {
-        console.error('Error:', error);
+      const color = document.getElementById('color').value;
+      if (color.length === 6) {
+        try {
+          // Replace with your ESP-01's IP or domain name
+          const espUrl = "http://YOUR_ESP_IP_OR_DOMAIN/setColor";
+          const response = await fetch(`${espUrl}?color=${color}`);
+          if (response.ok) {
+            document.getElementById('response').textContent = "Color sent successfully!";
+          } else {
+            document.getElementById('response').textContent = "Failed to send color.";
+          }
+        } catch (error) {
+          document.getElementById('response').textContent = "Error connecting to ESP.";
+        }
+      } else {
+        alert("Please enter a valid HEX color code.");
+      }
     });
-}
-    </script>
+  </script>
 </body>
 </html>
